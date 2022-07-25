@@ -1,0 +1,95 @@
+Infineon NFC Verifier Third-Party Open Source Components
+13Apr2022 IFX NFC Verifier Open Source Components:925433_2
+-----------------------------------------
+The Infineon NFC verifier app uses several open source components to implement certain features. 
+The details of these open source components are provided below:
+
+1. circle-check
+A graphical element used in the application. 
+https://fontawesome.com/icons/circle-check?s=solid
+
+License: CC BY 4.0
+https://creativecommons.org/licenses/by/4.0/legalcode 
+
+2. circle-info 
+A graphical element used in the application. 
+https://fontawesome.com/icons/circle-info?s=solid 
+
+License: CC BY 4.0
+https://creativecommons.org/licenses/by/4.0/legalcode 
+
+3. circle-xmark
+A graphical element used in the application.
+https://fontawesome.com/icons/circle-xmark?s=solid
+
+License: CC BY 4.0
+https://creativecommons.org/licenses/by/4.0/legalcode 
+
+4. Facebook 
+A graphical element used in the application.
+https://fontawesome.com/icons/facebook?s=brands
+
+License: CC BY 4.0
+https://creativecommons.org/licenses/by/4.0/legalcode 
+
+5. Instagram
+A graphical element used in the application.
+https://fontawesome.com/icons/instagram?s=brands
+
+License: CC BY 4.0
+https://creativecommons.org/licenses/by/4.0/legalcode 
+
+6. Linkedin
+A graphical element used in the application.
+https://fontawesome.com/icons/linkedin?s=brands
+
+License: CC BY 4.0
+https://creativecommons.org/licenses/by/4.0/legalcode 
+
+7. link 
+A graphical element used in the application.
+https://fontawesome.com/icons/link?s=solid
+
+License: CC BY 4.0
+https://creativecommons.org/licenses/by/4.0/legalcode 
+
+8. contactless phone 
+A graphical element used in the application. The original work has been modified.
+https://thenounproject.com/icon/contactless-phone-1588819/
+
+License: CC BY 3.0 US © LAFS
+https://creativecommons.org/licenses/by/3.0/us/legalcode
+
+9. power-off 
+A graphical element used in the application.
+https://fontawesome.com/icons/power-off?s=solid
+
+License: CC BY 4.0
+https://creativecommons.org/licenses/by/4.0/legalcode 
+
+10. triangle-exclamation
+A graphical element used in the application.
+https://fontawesome.com/icons/triangle-exclamation?s=solid
+
+License: CC BY 4.0
+https://creativecommons.org/licenses/by/4.0/legalcode 
+
+11. twitter-square
+A graphical element used in the application.
+https://fontawesome.com/icons/twitter-square?s=brands
+
+License: CC BY 4.0
+https://creativecommons.org/licenses/by/4.0/legalcode 
+
+12. YouTube
+A graphical element used in the application.
+https://fontawesome.com/icons/youtube?s=brands
+
+License: CC BY 4.0
+https://creativecommons.org/licenses/by/4.0/legalcode 
+
+13. Source Sans Pro (SourceSansPro-Regular.ttf, SourceSansPro-Bold.ttf, SourceSansPro-Light.ttf, SourceSansPro-Semibold.ttf)
+https://github.com/adobe-fonts/source-sans
+
+License:
+https://github.com/adobe-fonts/source-sans/blob/release/LICENSE.md

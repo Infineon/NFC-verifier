@@ -1,0 +1,183 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ /*Copyright 2022 Infineon Technologies AG.
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~
+  ~     http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License.
+  ~  */
+  -->
+
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+
+
+    >
+    <!-- binding object of ViewModel to the XML layout -->
+    <data>
+
+        <import type="android.view.View" />
+
+        <variable
+            name="homeViewModel"
+            type="com.infineon.nfcbpsk.ui.viewmodels.HomeViewModel" />
+    </data>
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <RelativeLayout
+            android:id="@+id/view_home_default"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/white"
+            android:visibility="@{homeViewModel.errorResult ==null?View.VISIBLE:View.GONE}"
+            tools:context=".ui.fragments.HomeFragment"
+            tools:ignore="UselessParent">
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_above="@+id/btn_scan_verify"
+                android:layout_marginBottom="30dp"
+                android:background="@drawable/home_background" />
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_above="@+id/tv_brand_verifier"
+                android:layout_centerHorizontal="true"
+                android:layout_marginBottom="20dp"
+                android:contentDescription="@string/nfc_scan"
+                android:src="@drawable/ic_nfc_scan" />
+
+            <TextView
+                android:id="@+id/tv_brand_verifier"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:fontFamily="@font/source_sans_pro_light"
+                android:gravity="center"
+                android:text="@string/brand_verifier"
+                android:textColor="@color/white"
+                android:textSize="36sp"
+
+                />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/tv_brand_verifier"
+                android:layout_centerHorizontal="true"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:fontFamily="@font/source_sans_pro_regular"
+                android:gravity="center"
+                android:text="@string/please_scan_your_product"
+                android:textColor="@color/white"
+                android:textSize="14sp"
+
+                />
+
+            <Button
+                android:id="@+id/btn_scan_verify"
+                android:layout_width="210dp"
+                android:layout_height="45dp"
+                android:layout_alignParentBottom="true"
+                android:layout_centerHorizontal="true"
+                android:layout_marginBottom="50dp"
+                android:background="@drawable/btn_bg_2"
+                android:fontFamily="@font/source_sans_pro_light"
+                android:text="@string/scan_amp_verify"
+                android:textAllCaps="false"
+                android:textColor="@color/white"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                app:backgroundTint="@color/berry" />
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/rl_error_view"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/white"
+            android:visibility="@{homeViewModel.errorResult!=null?View.VISIBLE:View.GONE}"
+            tools:visibility="visible">
+
+            <ImageView
+                android:id="@+id/iv_icon"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_above="@+id/tv_error_title"
+                android:layout_centerHorizontal="true"
+                android:layout_marginBottom="20dp"
+                android:contentDescription="@string/nfc_scan"
+                android:src="@{homeViewModel.errorResult.type==homeViewModel.errorResult.TYPE_ERROR?@drawable/ic_failure:@drawable/ic_warning}"
+                tools:src="@drawable/ic_failure" />
+
+            <TextView
+                android:id="@+id/tv_error_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:fontFamily="@font/source_sans_pro_light"
+                android:gravity="center"
+                android:text="@{homeViewModel.errorResult.title}"
+                android:textColor="@color/engineering_dark"
+                android:textSize="30sp"
+                tools:text="@string/msg_mutual_auth_failed"
+
+                />
+
+            <TextView
+                android:id="@+id/tv_message"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/tv_error_title"
+                android:layout_centerHorizontal="true"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:fontFamily="@font/source_sans_pro_regular"
+                android:gravity="center"
+                android:text="@{homeViewModel.errorResult.message}"
+                android:textColor="@color/engineering"
+                android:textSize="14sp"
+                tools:text="@string/network_failure_failed_to_connect_to_n_brand_verification_service"
+
+                />
+
+            <Button
+                android:id="@+id/btn_scan_again"
+                android:layout_width="210dp"
+                android:layout_height="45dp"
+                android:layout_alignParentBottom="true"
+                android:layout_centerHorizontal="true"
+                android:layout_marginBottom="50dp"
+                android:background="@drawable/btn_bg_2"
+                android:fontFamily="@font/source_sans_pro_light"
+                android:text="@string/scan_again"
+                android:textAllCaps="false"
+                android:textColor="@color/white"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                app:backgroundTint="@color/berry" />
+
+        </RelativeLayout>
+
+    </FrameLayout>
+</layout>

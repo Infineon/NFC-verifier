@@ -1,0 +1,50 @@
+[
+  {
+    "name": "About",
+    "link": null,
+    "type": 1,
+    "open": "WEBVIEW"
+  },
+  {
+    "name": "Sample Link 1",
+    "link": null,
+    "type": 2,
+    "open": ""
+  },
+  {
+     "name": "Sample Link 2",
+    "link": null,
+    "type": 2,
+    "open": ""
+  },
+  {
+    "name": "Sample Link 3",
+    "link": null,
+    "type": 2,
+    "open": ""
+  },
+  {
+    "name": "Sample Link 4",
+    "link": null,
+    "type": 2,
+    "open": ""
+  },
+  {
+    "name": "License",
+    "link": null,
+    "type": 1,
+    "open": "WEBVIEW"
+  },
+  {
+    "name": "Sample Link 1",
+    "link": "end_user_license.txt",
+    "type": 2,
+    "open": "FILEVIEW"
+  },
+  {
+    "name": "Sample Link 2",
+    "link": "third_party_license.txt",
+    "type": 2,
+    "open": "FILEVIEW"
+  }
+]

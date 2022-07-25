@@ -1,0 +1,32 @@
+[
+  {
+    "name": "Sample Links",
+    "link": "",
+    "type": 1,
+    "open": "WEBVIEW"
+  },
+  {
+    "name": "Sample Link 1",
+    "link": "",
+    "type": 2,
+    "open": "WEBVIEW"
+  },
+  {
+    "name": "Sample Link 2",
+    "link": "",
+    "type": 2,
+    "open": "WEBVIEW"
+  },
+  {
+	"name": "Sample Link 3",
+    "link":  "",
+    "type": 2,
+    "open": "WEBVIEW"
+  },
+  {
+    "name": "Sample Link 4",
+    "link": "",
+    "type": 2,
+    "open": "WEBVIEW"
+  }
+]

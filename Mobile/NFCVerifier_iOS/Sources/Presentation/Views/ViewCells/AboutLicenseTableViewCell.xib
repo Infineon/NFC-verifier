@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="20037" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina6_1" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="20020"/>
+        <capability name="Named colors" minToolsVersion="9.0"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <customFonts key="customFonts">
+        <array key="SourceSansPro-Semibold.ttf">
+            <string>SourceSansPro-Semibold</string>
+        </array>
+    </customFonts>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" id="KGk-i7-Jjw" customClass="AboutLicenseTableViewCell" customModule="nfcbpsk_ios" customModuleProvider="target">
+            <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+            <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="KGk-i7-Jjw" id="H2p-sc-9uM">
+                <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
+                <autoresizingMask key="autoresizingMask"/>
+                <subviews>
+                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="cqV-Xj-tgD">
+                        <rect key="frame" x="0.0" y="43" width="320" height="1"/>
+                        <color key="backgroundColor" name="Engineering"/>
+                        <constraints>
+                            <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="1" id="GnB-sf-0hK"/>
+                            <constraint firstAttribute="height" constant="1" id="stz-bU-Bg7"/>
+                        </constraints>
+                    </view>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Infineon NFC Link" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="hWy-D3-qlI">
+                        <rect key="frame" x="0.0" y="12" width="320" height="20.5"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <fontDescription key="fontDescription" name="SourceSansPro-Semibold" family="Source Sans Pro" pointSize="16"/>
+                        <color key="textColor" name="Engineering"/>
+                        <nil key="highlightedColor"/>
+                    </label>
+                </subviews>
+                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                <constraints>
+                    <constraint firstItem="cqV-Xj-tgD" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" id="7aS-6J-CAB"/>
+                    <constraint firstAttribute="trailing" secondItem="hWy-D3-qlI" secondAttribute="trailing" id="Gb5-RA-4nT"/>
+                    <constraint firstAttribute="bottom" secondItem="cqV-Xj-tgD" secondAttribute="bottom" id="JY6-Ag-iYd"/>
+                    <constraint firstItem="hWy-D3-qlI" firstAttribute="centerY" secondItem="H2p-sc-9uM" secondAttribute="centerY" id="PpO-kH-Fz2"/>
+                    <constraint firstItem="hWy-D3-qlI" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" id="Vcu-eK-sle"/>
+                    <constraint firstAttribute="trailing" secondItem="cqV-Xj-tgD" secondAttribute="trailing" id="z1u-Bf-AV9"/>
+                    <constraint firstItem="hWy-D3-qlI" firstAttribute="centerX" secondItem="H2p-sc-9uM" secondAttribute="centerX" id="zKa-RX-Lb7"/>
+                </constraints>
+            </tableViewCellContentView>
+            <viewLayoutGuide key="safeArea" id="njF-e1-oar"/>
+            <connections>
+                <outlet property="lblLink" destination="hWy-D3-qlI" id="w4Q-TN-vuI"/>
+            </connections>
+            <point key="canvasLocation" x="139" y="74"/>
+        </tableViewCell>
+    </objects>
+    <resources>
+        <namedColor name="Engineering">
+            <color red="0.57300001382827759" green="0.50999999046325684" blue="0.5220000147819519" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
+    </resources>
+</document>

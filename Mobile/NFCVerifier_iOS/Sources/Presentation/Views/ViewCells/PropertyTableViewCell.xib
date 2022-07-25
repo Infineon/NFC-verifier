@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="20037" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina6_1" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="20020"/>
+        <capability name="Named colors" minToolsVersion="9.0"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <customFonts key="customFonts">
+        <array key="SourceSansPro-Regular.ttf">
+            <string>SourceSansPro-Regular</string>
+        </array>
+    </customFonts>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <tableViewCell contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" rowHeight="41" id="KGk-i7-Jjw" customClass="PropertyTableViewCell" customModule="nfcbpsk_ios" customModuleProvider="target">
+            <rect key="frame" x="0.0" y="0.0" width="320" height="41"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+            <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="KGk-i7-Jjw" id="H2p-sc-9uM">
+                <rect key="frame" x="0.0" y="0.0" width="320" height="41"/>
+                <autoresizingMask key="autoresizingMask"/>
+                <subviews>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="ModelNo" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="3wE-2q-gpK">
+                        <rect key="frame" x="0.0" y="0.0" width="150" height="36"/>
+                        <constraints>
+                            <constraint firstAttribute="width" constant="150" id="QhI-w2-oJe"/>
+                        </constraints>
+                        <fontDescription key="fontDescription" name="SourceSansPro-Regular" family="Source Sans Pro" pointSize="14"/>
+                        <color key="textColor" name="EngineeringDark"/>
+                        <nil key="highlightedColor"/>
+                    </label>
+                    <label opaque="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Tic-D2-6or">
+                        <rect key="frame" x="140" y="5" width="180" height="36"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <constraints>
+                            <constraint firstAttribute="width" constant="180" id="RY0-Ma-Pr5"/>
+                        </constraints>
+                        <fontDescription key="fontDescription" name="SourceSansPro-Regular" family="Source Sans Pro" pointSize="14"/>
+                        <color key="textColor" name="EngineeringDark"/>
+                        <nil key="highlightedColor"/>
+                    </label>
+                </subviews>
+                <constraints>
+                    <constraint firstItem="3wE-2q-gpK" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" id="Q1h-J7-cyd"/>
+                    <constraint firstAttribute="bottom" secondItem="3wE-2q-gpK" secondAttribute="bottom" constant="5" id="TTE-GX-hoI"/>
+                    <constraint firstItem="3wE-2q-gpK" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" id="ZZH-MA-jzZ"/>
+                    <constraint firstAttribute="bottom" secondItem="Tic-D2-6or" secondAttribute="bottom" id="ja6-da-7fG"/>
+                    <constraint firstItem="Tic-D2-6or" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" constant="5" id="rzr-dd-mR3"/>
+                    <constraint firstAttribute="trailing" secondItem="Tic-D2-6or" secondAttribute="trailing" id="tnI-Aa-nbP"/>
+                </constraints>
+            </tableViewCellContentView>
+            <viewLayoutGuide key="safeArea" id="njF-e1-oar"/>
+            <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+            <connections>
+                <outlet property="propertyName" destination="3wE-2q-gpK" id="5fn-xQ-KBM"/>
+                <outlet property="propertyValue" destination="Tic-D2-6or" id="b56-qK-1SM"/>
+            </connections>
+            <point key="canvasLocation" x="100.00000000000001" y="53.90625"/>
+        </tableViewCell>
+    </objects>
+    <resources>
+        <namedColor name="EngineeringDark">
+            <color red="0.39215686274509803" green="0.30980392156862746" blue="0.32941176470588235" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
+    </resources>
+</document>

@@ -1,0 +1,28 @@
+<!--
+  ~ /*Copyright 2022 Infineon Technologies AG.
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~
+  ~     http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License.
+  ~  */
+  -->
+
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:width="320dp"
+    android:height="512dp"
+    android:viewportWidth="320"
+    android:viewportHeight="512"
+    tools:ignore="VectorRaster">
+  <path
+      android:pathData="M279.14,288l14.22,-92.66h-88.91v-60.13c0,-25.35 12.42,-50.06 52.24,-50.06h40.42V6.26S260.43,0 225.36,0c-73.22,0 -121.08,44.38 -121.08,124.72v70.62H22.89V288h81.39v224h100.17V288z"
+      android:fillColor="#FFFFFF"/>
+</vector>

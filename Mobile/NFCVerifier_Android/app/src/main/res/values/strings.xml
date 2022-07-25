@@ -1,0 +1,133 @@
+<!--
+  ~ /*Copyright  Company Name.
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~
+  ~     http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License.
+  ~  */
+  -->
+
+<resources>
+    <string name="app_name">Sample App</string>
+    <string name="app_logo_description">Application Logo</string>
+    <string name="scan_amp_verify"><![CDATA[Scan & verify]]></string>
+    <string name="title_activity_nfcpolling2">NFCScanActivity</string>
+    <string name="ready_to_scan">Ready to Scan</string>
+    <string name="cancel">Cancel</string>
+    <string name="hold_your_phone_near_the_item_nto_learn_more_about_it">Hold your phone near the item \nto learn more about it.</string>
+    <string name="msg_unsupported_nfc">NFC is not supported</string>
+    <string name="msg_to_enabled_nfc">Please enable NFC</string>
+    <string name="msg_select_aid">Unable to select MF</string>
+    <string name="msg_select_cc_file">Unable to select CC file</string>
+    <string name="msg_select_ndef_file">Unable to select NDEF file</string>
+    <string name="msg_read_ndef_file">Unable to read NDEF file</string>
+    <string name="msg_bp_record_unable_to_read">Failed to read brand protection record</string>
+    <string name="msg_bp_record_unavailable">Brand Protection record is not present</string>
+    <string name="msg_read_cc_file">Unable to read CC file</string>
+    <string name="msg_select_id_info_file">Unable to select ID_INFO file</string>
+    <string name="msg_read_id_info_file">Unable to read ID_INFO file</string>
+    <string name="msg_read_challenge_file">Unable to get challenge</string>
+    <string name="msg_mutual_auth_failed">Unable to mutual authenticate</string>
+    <string name="authenticating">Authenticating, Please wait</string>
+    <string name="msg_unable_connect_tag">Unable to connect tag</string>
+    <string name="msg_read_info_file">Failed to read product / service info file</string>
+    <string name="brand_verifier">Brand verifier</string>
+    <string name="please_scan_your_product">Please scan your product!</string>
+    <string name="nfc_scan">nfc scan</string>
+    <string name="scan_again">Scan again</string>
+    <string name="authentication_failed">Authentication failed</string>
+    <string name="could_t_verify_tag">Couldn\'t verify tag</string>
+    <string name="nfc_polling_cancel">Session invalidated by user</string>
+    <string name="nfc_disable">NFC is disabled!</string>
+    <string name="network_failure_failed_to_connect_to_n_brand_verification_service">Network failure! Failed to connect to\n brand verification service</string>
+    <string name="loading">Verifying..</string>
+    <string name="view_product_webpage">View product webpage</string>
+    <string name="authentic">Authentic!</string>
+    <string name="brand_verification_is_successful">Brand verification is successful!</string>
+    <string name="product_information">Product Information</string>
+    <string name="scan_other_product_now">Scan other product now</string>
+    <string name="message_enable_nfc">Please enable NFC in the Settings screen</string>
+    <string name="message_nfc_disable">NFC is disabled!</string>
+    <string name="enabled">Settings</string>
+    <string name="no">Cancel</string>
+    <string name="recentTransaction">Recent transaction log</string>
+    <string name="menu">Menu</string>
+    <string name="transaction_at">Transaction at</string>
+    <string name="dateformat">dd-MM-yyyy HH:mm:ss</string>
+    <string name="recentTlog">Recent transaction log</string>
+    <string name="step4">Step 4</string>
+    <string name="total_time">Total Time</string>
+    <string name="total_time_taken">Total Time taken:</string>
+    <string name="nfc_easy_check">Sample App</string>
+    <string name="copy_right">\u00a9  Company Name</string>
+    <string name="view_user_manual">Sample PDF Link</string>
+    <string name="unsupported_tag">Unsupported Tag</string>
+    <string name="options">Options</string>
+    <string name="auto_open_webpage">Auto-open webpage</string>
+    <string name="product_webpage_auto_open_after_sec">Product webpage auto-open after (sec)</string>
+    <string name="minus">-</string>
+    <string name="plus">+</string>
+    <string name="share_log">Share Transaction Log..</string>
+    <string name="copy_share">Copy / Share</string>
+    <string name="internet_error">Failed to reach brand verification service</string>
+    <string name="time_out">Session timeout</string>
+    <string name="social_media_logo_of_facebook">Social Media Logo of Facebook</string>
+    <string name="social_media_logo_linkedin">Social Media Logo: LinkedIn</string>
+    <string name="social_media_logo_tweeter">Social Media Logo: Tweeter</string>
+    <string name="social_media_logo_youtube">Social Media Logo: YouTube</string>
+    <string name="social_media_logo_instagram">Social Media Logo: Instagram</string>
+    <string name="version">Version %s Build %d</string>
+    <string name="modelNumber">Model number</string>
+    <string name="manufacturerName">Manufacturer</string>
+    <string name="serialNumber">Product serial</string>
+    <string name="manufactureDate">Manufactured on</string>
+    <string name="WarrantyValidityDate">Warranty validity</string>
+    <string name="lastServiceDate">Last service</string>
+    <string name="purchaseDate">Purchased on</string>
+    <string name="code">Product code</string>
+    <string name="close_dialog">Close dialog</string>
+    <string name="transaction_log_not_available">Transaction log not available</string>
+    <string name="error_parse_service_product">Couldn`t parse Product / Service information</string>
+    <string name="nfc_icon">NFC icon</string>
+    <string name="progress_bar_description">Progress bar while shown while communicating with NFC tag</string>
+    <string name="image_of_check">Image of check tick in green color</string>
+    <string name="button_to_close_description">Button to close dialog box</string>
+    <string name="github_link"></string>
+    <string name="help">Help</string>
+    <string name="about">About</string>
+    <string name="accept_license_agreement">Accept License Agreement</string>
+    <string name="title_end_user_license_agreement">Sample License</string>
+    <string-array name="information_titles">
+        <item>Product Information</item>
+        <item>Service Information</item>
+    </string-array>
+    <string-array name="product_information_titles">
+        <item>modelNumber</item>
+        <item>manufacturerName</item>
+        <item>serialNumber</item>
+        <item>manufactureDate</item>
+        <item>code</item>
+        <item>customFields</item>
+    </string-array>
+    <string-array name="service_information_titles">
+        <item>WarrantyValidityDate</item>
+        <item>lastServiceDate</item>
+        <item>purchaseDate</item>
+        <item>customFields</item>
+    </string-array>
+    <string-array name="menus">
+        <item name="home">Home</item>
+        <item name="recent_tran">Recent transaction log</item>
+        <item name="options">Options</item>
+        <item name="Help">Help</item>
+        <item name="About">About</item>
+    </string-array>
+</resources>
