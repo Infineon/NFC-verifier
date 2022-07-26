@@ -1,0 +1,55 @@
+@ECHO OFF
+if %1 NEQ SCRIPT (
+	cmd /k
+)
+
+aws s3 cp WebData s3://bucket-name/ --recursive %2 %3
+IF %ERRORLEVEL% NEQ 0 ( 
+   cmd /k
+) 
+
+aws s3api put-object-acl --bucket bucket-name --key index.html --acl public-read %2 %3
+IF %ERRORLEVEL% NEQ 0 ( 
+   cmd /k
+) 
+aws s3api put-object-acl --bucket bucket-name --key script.js --acl public-read %2 %3
+IF %ERRORLEVEL% NEQ 0 ( 
+   cmd /k
+) 
+aws s3api put-object-acl --bucket bucket-name --key style.css --acl public-read %2 %3
+IF %ERRORLEVEL% NEQ 0 ( 
+   cmd /k
+) 
+aws s3api put-object-acl --bucket bucket-name --key images/download-android.png --acl public-read %2 %3
+IF %ERRORLEVEL% NEQ 0 ( 
+   cmd /k
+) 
+aws s3api put-object-acl --bucket bucket-name --key images/download-ios.png  --acl public-read %2 %3
+IF %ERRORLEVEL% NEQ 0 ( 
+   cmd /k
+) 
+aws s3api put-object-acl --bucket bucket-name --key images/infineon-logo.jpg --acl public-read %2 %3
+IF %ERRORLEVEL% NEQ 0 ( 
+   cmd /k
+) 
+aws s3api put-object-acl --bucket bucket-name --key images/suggest-icon.png --acl public-read %2 %3
+IF %ERRORLEVEL% NEQ 0 ( 
+   cmd /k
+) 
+
+aws s3 rb s3://temp-nfcbpsk-s3-bucket-jar --force %2 %3
+IF %ERRORLEVEL% NEQ 0 ( 
+   cmd /k
+) 
+aws s3 rm s3://bucket-name/script-template.js %2 %3
+IF %ERRORLEVEL% NEQ 0 ( 
+   cmd /k
+)
+del WebData\script.js 
+IF %ERRORLEVEL% NEQ 0 ( 
+   cmd /k
+) 
+powershell -Command  "$region = aws configure get region  %2 %3; $output = aws apigateway get-rest-apis  %2 %3 | ConvertFrom-Json; foreach ($element in $output.items) { if($element.name -eq 'brandprotect'){  $id= $element.id; echo 'Verification URl: https://'$id'.execute-api.'$region'.amazonaws.com/verify/'   } if($element.name -eq 'brandprotect-management'){  $id= $element.id; echo 'Service Endpoint URL: https://'$id'.execute-api.'$region'.amazonaws.com/manage/'   }  }"
+IF %ERRORLEVEL% NEQ 0 ( 
+   cmd /k
+)

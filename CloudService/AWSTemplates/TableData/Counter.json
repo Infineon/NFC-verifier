@@ -1,0 +1,11 @@
+{
+ "CounterId": {
+  "S": "IFX001"
+ },
+ "ProductIdCounter": {
+  "N": "0"
+ },
+ "KeyLabelCounter": {
+  "N": "0"
+ }
+}

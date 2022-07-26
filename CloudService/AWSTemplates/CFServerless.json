@@ -1,0 +1,2143 @@
+{
+	"AWSTemplateFormatVersion": "2010-09-09",
+	"Transform": "AWS::Serverless-2016-10-31",
+	"Description": "AWS CloudFormation template creates and configures the brand protection infrastructure including services such as Lambda, DynamoDB, API Gateway, Cognito,...",
+	"Resources": {
+		"RestAPI": {
+			"Type": "AWS::ApiGateway::RestApi",
+			"Properties": {
+				"Description": "Creates APIs for brand verification",
+				"Name": "brandprotect",
+				"EndpointConfiguration": {
+					"Types": [
+						"REGIONAL"
+					]
+				},
+				"Body": {
+					"swagger": "2.0",
+					"info": {
+						"description": "APIs used for brand verification",
+						"version": "1.0.0",
+						"title": "brandprotect"
+					},
+					"schemes": [
+						"https"
+					],
+					"paths": {
+						"/product/{id}": {
+							"get": {
+								"consumes": [
+									"application/json"
+								],
+								"produces": [
+									"application/json"
+								],
+								"responses": {
+									"200": {
+										"description": "Access-Control-Allow-Origin",
+										"headers": {
+											"Access-Control-Allow-Origin": {
+												"type": "string"
+											}
+										}
+
+									}
+								},
+								"x-amazon-apigateway-integration": {
+									"description": "Retrieves product URL from database",
+									"credentials": {
+										"Fn::GetAtt": [
+											"APIGateWayProductReadRole",
+											"Arn"
+										]
+									},
+									"uri": {
+										"Fn::Sub": "arn:aws:apigateway:${AWS::Region}:dynamodb:action/GetItem"
+									},
+									"requestTemplates": {
+										"application/json": {
+											"Fn::Sub": [
+												"{\n \"TableName\": \"${tableName}\",\n \"Key\": { \"ProductCode\": { \"S\": \"$input.params('id')\"}}, \"AttributesToGet\": [\"ProductWebpage\"]}",
+												{
+													"tableName": "Product"
+												}
+											]
+										}
+									},
+									"responses": {
+										"default": {
+											"statusCode": "200",
+											"mapping": "YES",
+											"responseParameters": {
+												"method.response.header.Access-Control-Allow-Origin": "'https://bucket-name.s3.${AWS::Region}.amazonaws.com'"
+											}
+										}
+									},
+									"passthroughBehavior": "when_no_match",
+									"httpMethod": "POST",
+									"type": "AWS"
+								}
+							},
+							"options": {
+								"consumes": [
+									"application/json"
+								],
+								"produces": [
+									"application/json"
+								],
+								"responses": {
+									"200": {
+										"description": "OK",
+										"headers": {
+											"Access-Control-Allow-Origin": {
+												"type": "string"
+											},
+											"Access-Control-Allow-Methods": {
+												"type": "string"
+											},
+											"Access-Control-Allow-Headers": {
+												"type": "string"
+											}
+										}
+									}
+								},
+								"x-amazon-apigateway-integration": {
+									"responses": {
+										"default": {
+											"statusCode": "200",
+											"responseParameters": {
+												"method.response.header.Access-Control-Allow-Methods": "'GET,OPTIONS'",
+												"method.response.header.Access-Control-Allow-Headers": "'Content-Type,Authorization,X-Amz-Date,X-Api-Key,X-Amz-Security-Token'",
+												"method.response.header.Access-Control-Allow-Origin": "'https://nfcbpsk-s3-bucket.s3.${AWS::Region}.amazonaws.com'"
+											}
+										}
+									},
+									"type": "mock"
+
+								}
+							},
+							"requestTemplates": {
+								"application/json": "{\"statusCode\": 200}",
+								"type": "mock"
+							}
+						},
+
+						"/sm/generate-ma": {
+							"post": {
+								"produces": [
+									"application/json",
+									"application/customer-error",
+									"application/api_not_found",
+									"application/no_record",
+									"application/api_error"
+								],
+								"responses": {
+									"200": {
+										"description": "200 response",
+										"schema": {
+											"$ref": "#/definitions/Empty"
+										}
+									},
+									"201": {
+										"description": "201 response"
+									},
+									"204": {
+										"description": "204 response"
+									},
+									"230": {
+										"description": "230 response"
+									},
+									"231": {
+										"description": "231 response"
+									},
+									"232": {
+										"description": "232 response"
+									},
+									"233": {
+										"description": "233 response"
+									}
+								},
+								"security": [
+
+								],
+								"x-amazon-apigateway-integration": {
+									"responses": {
+										"default": {
+											"statusCode": "200"
+										}
+									},
+									"uri": {
+										"Fn::Join": [
+											":",
+											[
+												"arn:aws:apigateway",
+												{
+													"Ref": "AWS::Region"
+												},
+												"lambda:path/2015-03-31/functions/arn:aws:lambda",
+												{
+													"Ref": "AWS::Region"
+												},
+												{
+													"Ref": "AWS::AccountId"
+												},
+												"function",
+												{
+													"Fn::Join": [
+														"",
+														[
+															{
+																"Ref": "brandprotectsmma"
+															},
+															"/invocations"
+														]
+													]
+												}
+											]
+										]
+									},
+									"passthroughBehavior": "when_no_match",
+									"httpMethod": "POST",
+									"contentHandling": "CONVERT_TO_TEXT",
+									"type": "AWS_PROXY"
+								}
+							}
+						},
+						"/sm/verify-ma": {
+							"post": {
+								"produces": [
+									"application/json",
+									"application/customer-error",
+									"application/api_not_found",
+									"application/no_record",
+									"application/api_error"
+								],
+								"responses": {
+									"200": {
+										"description": "200 response",
+										"schema": {
+											"$ref": "#/definitions/Empty"
+										}
+									},
+									"201": {
+										"description": "201 response"
+									},
+									"204": {
+										"description": "204 response"
+									},
+									"230": {
+										"description": "230 response"
+									},
+									"231": {
+										"description": "231 response"
+									},
+									"232": {
+										"description": "232 response"
+									},
+									"233": {
+										"description": "233 response"
+									}
+								},
+								"security": [
+
+								],
+								"x-amazon-apigateway-integration": {
+									"responses": {
+										"default": {
+											"statusCode": "200"
+										}
+									},
+									"uri": {
+										"Fn::Join": [
+											":",
+											[
+												"arn:aws:apigateway",
+												{
+													"Ref": "AWS::Region"
+												},
+												"lambda:path/2015-03-31/functions/arn:aws:lambda",
+												{
+													"Ref": "AWS::Region"
+												},
+												{
+													"Ref": "AWS::AccountId"
+												},
+												"function",
+												{
+													"Fn::Join": [
+														"",
+														[
+															{
+																"Ref": "brandprotectsmma"
+															},
+															"/invocations"
+														]
+													]
+												}
+											]
+										]
+									},
+									"passthroughBehavior": "when_no_match",
+									"httpMethod": "POST",
+									"contentHandling": "CONVERT_TO_TEXT",
+									"type": "AWS_PROXY"
+								}
+							}
+						}
+					},
+					"securityDefinitions": {
+						"sigv4": {
+							"type": "apiKey",
+							"name": "Authorization",
+							"in": "header",
+							"x-amazon-apigateway-authtype": "awsSigv4"
+						}
+					},
+					"definitions": {
+						"Empty": {
+							"type": "object",
+							"title": "Empty Schema"
+						}
+					}
+				}
+			}
+		},
+		"brandprotectmanagement": {
+			"Type": "AWS::ApiGateway::RestApi",
+			"Properties": {
+				"Description": "Creates the APIs for Keys and Product management",
+				"Name": "brandprotect-management",
+				"EndpointConfiguration": {
+					"Types": [
+						"REGIONAL"
+					]
+				},
+				"Body": {
+					"swagger": "2.0",
+					"info": {
+						"description": "APIs for Keys and Product management",
+						"version": "1.0.0",
+						"title": "brandprotect-management"
+					},
+					"schemes": [
+						"https"
+					],
+					"paths": {
+						"/": {},
+						"/keys": {
+							"post": {
+								"produces": [
+									"application/json",
+									"application/customer-error",
+									"application/api_not_found",
+									"application/no_record",
+									"application/api_error"
+								],
+								"responses": {
+									"200": {
+										"description": "200 response",
+										"schema": {
+											"$ref": "#/definitions/Empty"
+										}
+									},
+									"201": {
+										"description": "201 response"
+									},
+									"204": {
+										"description": "204 response"
+									},
+									"230": {
+										"description": "230 response"
+									},
+									"231": {
+										"description": "231 response"
+									},
+									"232": {
+										"description": "232 response"
+									},
+									"233": {
+										"description": "233 response"
+									}
+								},
+								"security": [
+									{
+										"CognitoAuthorizer": [ "email" ]
+									}
+								],
+								"x-amazon-apigateway-integration": {
+									"responses": {
+										"default": {
+											"statusCode": "200"
+										}
+									},
+
+									"uri": {
+										"Fn::Join": [
+											":",
+											[
+
+												"arn:aws:apigateway",
+												{
+													"Ref": "AWS::Region"
+												},
+												"lambda:path/2015-03-31/functions/arn:aws:lambda",
+												{
+													"Ref": "AWS::Region"
+												},
+												{
+													"Ref": "AWS::AccountId"
+												},
+												"function",
+												{
+													"Fn::Join": [
+														"",
+														[
+															{
+																"Ref": "brandprotectupdatekey"
+															},
+															"/invocations"
+														]
+													]
+												}
+											]
+										]
+									},
+									"passthroughBehavior": "when_no_match",
+									"httpMethod": "POST",
+									"contentHandling": "CONVERT_TO_TEXT",
+
+									"type": "AWS_PROXY"
+								}
+							},
+							"get": {
+								"produces": [
+									"application/json",
+									"application/customer-error",
+									"application/api_not_found",
+									"application/no_record",
+									"application/api_error"
+								],
+								"responses": {
+									"200": {
+										"description": "200 response",
+										"schema": {
+											"$ref": "#/definitions/Empty"
+										}
+									},
+									"201": {
+										"description": "201 response"
+									},
+									"204": {
+										"description": "204 response"
+									},
+									"230": {
+										"description": "230 response"
+									},
+									"231": {
+										"description": "231 response"
+									},
+									"232": {
+										"description": "232 response"
+									},
+									"233": {
+										"description": "233 response"
+									}
+								},
+								"security": [
+									{
+										"CognitoAuthorizer": [ "email" ]
+									}
+								],
+								"x-amazon-apigateway-integration": {
+									"uri": {
+										"Fn::Join": [
+											":",
+											[
+
+												"arn:aws:apigateway",
+												{
+													"Ref": "AWS::Region"
+												},
+												"lambda:path/2015-03-31/functions/arn:aws:lambda",
+												{
+													"Ref": "AWS::Region"
+												},
+												{
+													"Ref": "AWS::AccountId"
+												},
+												"function",
+												{
+													"Fn::Join": [
+														"",
+														[
+															{
+																"Ref": "brandprotectlistkeys"
+															},
+															"/invocations"
+														]
+													]
+												}
+											]
+										]
+									},
+									"responses": {
+										"default": {
+											"statusCode": "200"
+										}
+									},
+									"passthroughBehavior": "when_no_match",
+									"httpMethod": "GET",
+									"contentHandling": "CONVERT_TO_TEXT",
+									"type": "AWS_PROXY"
+								}
+							}
+						},
+						"/products": {
+							"post": {
+								"produces": [
+									"application/json",
+									"application/customer-error",
+									"application/api_not_found",
+									"application/no_record",
+									"application/api_error"
+								],
+								"responses": {
+									"200": {
+										"description": "200 response",
+										"schema": {
+											"$ref": "#/definitions/Empty"
+										}
+									},
+									"201": {
+										"description": "201 response"
+									},
+									"204": {
+										"description": "204 response"
+									},
+									"230": {
+										"description": "230 response"
+									},
+									"231": {
+										"description": "231 response"
+									},
+									"232": {
+										"description": "232 response"
+									},
+									"233": {
+										"description": "233 response"
+									}
+								},
+								"security": [
+									{
+										"CognitoAuthorizer": [ "email" ]
+									}
+								],
+								"x-amazon-apigateway-integration": {
+									"responses": {
+										"default": {
+											"statusCode": "200"
+										}
+									},
+									"uri": {
+										"Fn::Join": [
+											":",
+											[
+												"arn:aws:apigateway",
+												{
+													"Ref": "AWS::Region"
+												},
+												"lambda:path/2015-03-31/functions/arn:aws:lambda",
+												{
+													"Ref": "AWS::Region"
+												},
+												{
+													"Ref": "AWS::AccountId"
+												},
+												"function",
+												{
+													"Fn::Join": [
+														"",
+														[
+															{
+																"Ref": "brandprotectupdateproduct"
+															},
+															"/invocations"
+														]
+													]
+												}
+											]
+										]
+									},
+									"passthroughBehavior": "when_no_match",
+									"httpMethod": "POST",
+									"contentHandling": "CONVERT_TO_TEXT",
+
+									"type": "AWS_PROXY"
+								}
+							},
+							"get": {
+								"produces": [
+									"application/json",
+									"application/customer-error",
+									"application/api_not_found",
+									"application/no_record",
+									"application/api_error"
+								],
+								"responses": {
+									"200": {
+										"description": "200 response",
+										"schema": {
+											"$ref": "#/definitions/Empty"
+										}
+									},
+									"201": {
+										"description": "201 response"
+									},
+									"204": {
+										"description": "204 response"
+									},
+									"230": {
+										"description": "230 response"
+									},
+									"231": {
+										"description": "231 response"
+									},
+									"232": {
+										"description": "232 response"
+									},
+									"233": {
+										"description": "233 response"
+									}
+								},
+								"security": [
+									{
+										"CognitoAuthorizer": [ "email" ]
+									}
+								],
+								"x-amazon-apigateway-integration": {
+									"responses": {
+										"default": {
+											"statusCode": "200"
+										}
+									},
+									"uri": {
+
+										"Fn::Join": [
+											":",
+											[
+												"arn:aws:apigateway",
+												{
+													"Ref": "AWS::Region"
+												},
+												"lambda:path/2015-03-31/functions/arn:aws:lambda",
+												{
+													"Ref": "AWS::Region"
+												},
+												{
+													"Ref": "AWS::AccountId"
+												},
+												"function",
+												{
+													"Fn::Join": [
+														"",
+														[
+															{
+																"Ref": "brandprotectlistproductinfo"
+															},
+															"/invocations"
+														]
+													]
+												}
+											]
+										]
+									},
+									"passthroughBehavior": "when_no_match",
+									"httpMethod": "GET",
+									"contentHandling": "CONVERT_TO_TEXT",
+									"type": "AWS_PROXY"
+								}
+							}
+						}
+
+					},
+					"securityDefinitions": {
+						"CognitoAuthorizer": {
+							"type": "apiKey",
+							"name": "Authorization",
+							"in": "header",
+							"x-amazon-apigateway-authtype": "cognito_user_pools",
+							"x-amazon-apigateway-authorizer": {
+								"type": "cognito_user_pools",
+								"providerARNs": [
+									{
+										"Fn::GetAtt": [
+											"IdentityPool",
+											"Arn"
+										]
+									}
+								]
+							}
+						},
+						"definitions": {
+							"Empty": {
+								"type": "object",
+								"title": "Empty Schema"
+							}
+						}
+					}
+				}
+			}
+		},
+		"RestAPIDeployment": {
+			"Type": "AWS::ApiGateway::Deployment",
+			"DependsOn": [
+				"RestAPI"
+			],
+			"Properties": {
+				"RestApiId": {
+					"Ref": "RestAPI"
+				},
+				"StageName": "verify"
+			}
+		},
+		"BrandprotectManagementRestAPIDeployment": {
+			"Type": "AWS::ApiGateway::Deployment",
+			"DependsOn": [
+				"brandprotectmanagement"
+			],
+			"Properties": {
+				"RestApiId": {
+					"Ref": "brandprotectmanagement"
+				},
+				"StageName": "manage"
+			}
+		},
+		"ApiGatewayAccount": {
+			"Type": "AWS::ApiGateway::Account",
+			"Properties": {
+				"CloudWatchRoleArn": {
+					"Fn::GetAtt": [
+						"ApiGatewayCloudWatchLogsRole",
+						"Arn"
+					]
+				}
+			}
+		},
+		"Version": {
+			"Type": "AWS::Lambda::Version",
+			"Properties": {
+				"FunctionName": {
+					"Fn::GetAtt": [
+						"brandprotectsmma",
+						"Arn"
+					]
+				}
+			}
+		},
+		"brandprotectsmmaLayer": {
+			"Type": "AWS::Lambda::LayerVersion",
+			"Properties": {
+				"CompatibleRuntimes": [
+					"java11"
+				],
+				"Content": {
+					"S3Bucket": "temp-nfcbpsk-s3-bucket-jar",
+
+					"S3Key": "lambda-layer-nfcbpsk-auth.zip"
+
+				},
+				"LayerName": "brandprotectsmmaLayer"
+			}
+		},
+		
+		
+		"RestAPICallerManagedPolicy": {
+			"Type": "AWS::IAM::ManagedPolicy",
+			"DependsOn": [
+				"RestAPI",
+				"brandprotectsmma"
+			],
+			"Properties": {
+				"Description": "generate-ma API Caller",
+				"PolicyDocument": {
+					"Version": "2012-10-17",
+					"Statement": [
+						{
+							"Sid": "RestAPICaller001",
+							"Effect": "Allow",
+							"Action": "execute-api:Invoke",
+							"Resource": {
+								"Fn::Join": [
+									"",
+									[
+										"arn:aws:execute-api:",
+										{
+											"Ref": "AWS::Region"
+										},
+										":",
+										{
+											"Ref": "AWS::AccountId"
+										},
+										":",
+										{
+											"Ref": "RestAPI"
+										},
+										"/*/POST/*"
+									]
+								]
+							}
+						},
+						{
+							"Sid": "RestAPICaller002",
+							"Effect": "Allow",
+							"Action": "lambda:InvokeFunction",
+							"Resource": {
+								"Fn::Join": [
+									"",
+									[
+										"arn:aws:lambda:",
+										{
+											"Ref": "AWS::Region"
+										},
+										":",
+										{
+											"Ref": "AWS::AccountId"
+										},
+										":function:",
+										{
+											"Ref": "brandprotectsmma"
+										}
+									]
+								]
+							}
+						}
+					]
+				},
+				"Users": [
+					
+				],
+				"ManagedPolicyName": "API_Caller_Policy"
+			}
+		},
+		"BrandprotectManagemenRestAPICallerManagedPolicy": {
+			"Type": "AWS::IAM::ManagedPolicy",
+			"DependsOn": [
+				"brandprotectmanagement",
+				"brandprotectupdatekey"
+			],
+			"Properties": {
+				"Description": "Policy to invoke management Lambda methods",
+				"PolicyDocument": {
+					"Version": "2012-10-17",
+					"Statement": [
+						{
+							"Sid": "RestAPICaller001",
+							"Effect": "Allow",
+							"Action": "execute-api:Invoke",
+							"Resource": {
+								"Fn::Join": [
+									"",
+									[
+										"arn:aws:execute-api:",
+										{
+											"Ref": "AWS::Region"
+										},
+										":",
+										{
+											"Ref": "AWS::AccountId"
+										},
+										":",
+										{
+											"Ref": "RestAPI"
+										},
+										"/*/POST/*"
+									]
+								]
+							}
+						},
+						{
+							"Sid": "RestAPICaller002",
+							"Effect": "Allow",
+							"Action": "lambda:InvokeFunction",
+							"Resource": {
+								"Fn::Join": [
+									"",
+									[
+										"arn:aws:lambda:",
+										{
+											"Ref": "AWS::Region"
+										},
+										":",
+										{
+											"Ref": "AWS::AccountId"
+										},
+										":function:",
+										{
+											"Ref": "brandprotectupdatekey"
+										}
+									]
+								]
+							}
+						}
+					]
+				},
+				"Users": [
+					
+				],
+				"ManagedPolicyName": "brandprotect-management_Caller_Policy"
+			}
+		},
+		"MutualAuthGenerateLambdaInvokePermissions": {
+			"Type": "AWS::Lambda::Permission",
+			"Properties": {
+				"Action": "lambda:InvokeFunction",
+				"FunctionName": {
+					"Ref": "brandprotectsmma"
+				},
+				"Principal": "apigateway.amazonaws.com",
+				"SourceArn": {
+					"Fn::Join": [
+						"",
+						[
+							"arn:aws:execute-api:",
+							{
+								"Ref": "AWS::Region"
+							},
+							":",
+							{
+								"Ref": "AWS::AccountId"
+							},
+							":",
+							{
+								"Ref": "RestAPI"
+							},
+							"/*/POST/sm/generate-ma"
+						]
+					]
+				}
+			}
+		},
+		"MutualAuthVerifyLambdaInvokePermissions": {
+			"Type": "AWS::Lambda::Permission",
+			"Properties": {
+				"Action": "lambda:InvokeFunction",
+				"FunctionName": {
+					"Ref": "brandprotectsmma"
+				},
+				"Principal": "apigateway.amazonaws.com",
+				"SourceArn": {
+					"Fn::Join": [
+						"",
+						[
+							"arn:aws:execute-api:",
+							{
+								"Ref": "AWS::Region"
+							},
+							":",
+							{
+								"Ref": "AWS::AccountId"
+							},
+							":",
+							{
+								"Ref": "RestAPI"
+							},
+							"/*/POST/sm/verify-ma"
+						]
+					]
+				}
+			}
+		},
+		"BrandProtectManagementListKeysLambdaInvokePermissions": {
+			"Type": "AWS::Lambda::Permission",
+			"Properties": {
+				"Action": "lambda:InvokeFunction",
+				"FunctionName": {
+					"Ref": "brandprotectlistkeys"
+				},
+				"Principal": "apigateway.amazonaws.com",
+				"SourceArn": {
+					"Fn::Join": [
+						"",
+						[
+							"arn:aws:execute-api:",
+							{
+								"Ref": "AWS::Region"
+							},
+							":",
+							{
+								"Ref": "AWS::AccountId"
+							},
+							":",
+							{
+								"Ref": "brandprotectmanagement"
+							},
+							"/*/GET/keys"
+						]
+					]
+				}
+			}
+		},
+		"BrandProtectManagementListProductsLambdaInvokePermissions": {
+			"Type": "AWS::Lambda::Permission",
+			"Properties": {
+				"Action": "lambda:InvokeFunction",
+				"FunctionName": {
+					"Ref": "brandprotectlistproductinfo"
+				},
+				"Principal": "apigateway.amazonaws.com",
+				"SourceArn": {
+					"Fn::Join": [
+						"",
+						[
+							"arn:aws:execute-api:",
+							{
+								"Ref": "AWS::Region"
+							},
+							":",
+							{
+								"Ref": "AWS::AccountId"
+							},
+							":",
+							{
+								"Ref": "brandprotectmanagement"
+							},
+							"/*/GET/products"
+						]
+					]
+				}
+			}
+		},
+		"BrandProtectManagementUpdateKeyLambdaInvokePermissions": {
+			"Type": "AWS::Lambda::Permission",
+			"Properties": {
+				"Action": "lambda:InvokeFunction",
+				"FunctionName": {
+					"Ref": "brandprotectupdatekey"
+				},
+				"Principal": "apigateway.amazonaws.com",
+				"SourceArn": {
+					"Fn::Join": [
+						"",
+						[
+							"arn:aws:execute-api:",
+							{
+								"Ref": "AWS::Region"
+							},
+							":",
+							{
+								"Ref": "AWS::AccountId"
+							},
+							":",
+							{
+								"Ref": "brandprotectmanagement"
+							},
+							"/*/POST/keys"
+						]
+					]
+				}
+			}
+		},
+		"BrandProtectManagementUpdateProductLambdaInvokePermissions": {
+			"Type": "AWS::Lambda::Permission",
+			"Properties": {
+				"Action": "lambda:InvokeFunction",
+				"FunctionName": {
+					"Ref": "brandprotectupdateproduct"
+				},
+				"Principal": "apigateway.amazonaws.com",
+				"SourceArn": {
+					"Fn::Join": [
+						"",
+						[
+							"arn:aws:execute-api:",
+							{
+								"Ref": "AWS::Region"
+							},
+							":",
+							{
+								"Ref": "AWS::AccountId"
+							},
+							":",
+							{
+								"Ref": "brandprotectmanagement"
+							},
+							"/*/POST/products"
+						]
+					]
+				}
+			}
+		},
+		"CognitoPresignupTriggerLambdaInvokePermissions": {
+			"Type": "AWS::Lambda::Permission",
+			"Properties": {
+				"Action": "lambda:InvokeFunction",
+				"FunctionName": {
+					"Ref": "brandprotectUserSignupAction"
+				},
+				"Principal": "cognito-idp.amazonaws.com",
+				"SourceArn": {
+					"Fn::GetAtt": [
+						"IdentityPool",
+						"Arn"
+					]
+				}
+			}
+		},
+		"LambdaPermissions": {
+			"Type": "AWS::Lambda::Permission",
+			"DependsOn": [
+				"brandprotectsmma"
+			],
+			"Properties": {
+				"Action": "lambda:InvokeFunction",
+				"FunctionName": {
+					"Ref": "brandprotectsmma"
+				},
+				"Principal": "apigateway.amazonaws.com",
+				"SourceArn": {
+					"Fn::Join": [
+						"",
+						[
+							"arn:aws:execute-api:",
+							{
+								"Ref": "AWS::Region"
+							},
+							":",
+							{
+								"Ref": "AWS::AccountId"
+							},
+							":",
+							{
+								"Ref": "RestAPI"
+							},
+							"/*/POST/generate-ma"
+						]
+					]
+				}
+			}
+		},
+		"BrandprotectManagemenBrandProtectSMMAGroup": {
+			"Type": "AWS::Logs::LogGroup",
+			"DependsOn": "brandprotectupdatekey",
+			"Properties": {
+				"LogGroupName": {
+					"Fn::Join": [
+						"",
+						[
+							"/aws/lambda/",
+							{
+								"Ref": "brandprotectupdatekey"
+							}
+						]
+					]
+				}
+			}
+		},
+		"BrandProtectSMMAGroup": {
+			"Type": "AWS::Logs::LogGroup",
+			"DependsOn": "brandprotectsmma",
+			"Properties": {
+				"LogGroupName": {
+					"Fn::Join": [
+						"",
+						[
+							"/aws/lambda/",
+							{
+								"Ref": "brandprotectsmma"
+							}
+						]
+					]
+				}
+			}
+		},
+		"brandprotectsmma": {
+			"Type": "AWS::Lambda::Function",
+			"Properties": {
+				"FunctionName": "brandprotect-sm-ma",
+				"Handler": "com.infineon.brandprotect.MutualAuthHandler::handleRequest",
+				"Runtime": "java11",
+				"Environment": {
+					"Variables": {
+						"DB_AWS_REGION": {
+							"Ref": "AWS::Region"
+						},
+						"IFX_KEY_VERIFICATION_LIMIT": "1000",
+						"USER_KEY_VERIFICATION_LIMIT": "100",
+						"VERIFICATION_LIMIT_ENABLED": 0
+					}
+				},
+				"Code": {
+					"S3Bucket": "temp-nfcbpsk-s3-bucket-jar",
+
+					"S3Key": "lambda-brand-verification-v1.0.jar"
+
+				},
+				"Layers": [
+					{
+						"Ref": "brandprotectsmmaLayer"
+					}
+				],
+				"Description": "",
+				"MemorySize": 512,
+				"Timeout": 15,
+				"Role": {
+					"Fn::GetAtt": [
+						"brandprotectsmmarole",
+						"Arn"
+					]
+				}
+
+			}
+		},
+		"brandprotectupdatekey": {
+			"Type": "AWS::Lambda::Function",
+			"Properties": {
+				"FunctionName": "brandprotect-update-key",
+				"Handler": "com.infineon.brandprotect.UpdateKeyHandler::handleRequest",
+				"Runtime": "java11",
+				"Code": {
+					"S3Bucket": "temp-nfcbpsk-s3-bucket-jar",
+					"S3Key": "lambda-nfcbp-management-v1.0.jar"
+				},
+				"Environment": {
+					"Variables": {
+						"DB_AWS_REGION": {
+							"Ref": "AWS::Region"
+						}
+					}
+				},
+				"Description": "",
+				"MemorySize": 512,
+				"Timeout": 15,
+				"Role": {
+					"Fn::GetAtt": [
+						"brandprotectupdatekeyrole",
+						"Arn"
+					]
+				}
+			}
+		},
+		"brandprotectlistkeys": {
+			"Type": "AWS::Lambda::Function",
+			"Properties": {
+				"FunctionName": "brandprotect-list-keys",
+				"Handler": "com.infineon.brandprotect.ListKeysHandler::handleRequest",
+				"Runtime": "java11",
+				"Code": {
+					"S3Bucket": "temp-nfcbpsk-s3-bucket-jar",
+					"S3Key": "lambda-nfcbp-management-v1.0.jar"
+				},
+				"Environment": {
+					"Variables": {
+						"DB_AWS_REGION": {
+							"Ref": "AWS::Region"
+						}
+					}
+				},
+				"Description": "",
+				"MemorySize": 512,
+				"Timeout": 15,
+				"Role": {
+					"Fn::GetAtt": [
+						"brandprotectlistkeysrole",
+						"Arn"
+					]
+				}
+			}
+		},
+		"brandprotectlistproductinfo": {
+			"Type": "AWS::Lambda::Function",
+			"Properties": {
+				"FunctionName": "brandprotect-list-product-info",
+				"Handler": "com.infineon.brandprotect.ListProductsHandler::handleRequest",
+				"Runtime": "java11",
+				"Code": {
+					"S3Bucket": "temp-nfcbpsk-s3-bucket-jar",
+					"S3Key": "lambda-nfcbp-management-v1.0.jar"
+				},
+				"Environment": {
+					"Variables": {
+						"DB_AWS_REGION": {
+							"Ref": "AWS::Region"
+						}
+					}
+				},
+				"Description": "",
+				"MemorySize": 512,
+				"Timeout": 15,
+				"Role": {
+					"Fn::GetAtt": [
+						"brandprotectlistproductinforole",
+						"Arn"
+					]
+				}
+
+			}
+		},
+		"brandprotectupdateproduct": {
+			"Type": "AWS::Lambda::Function",
+			"Properties": {
+				"FunctionName": "brandprotect-update-product",
+				"Handler": "com.infineon.brandprotect.UpdateProductHandler::handleRequest",
+				"Runtime": "java11",
+				"Code": {
+					"S3Bucket": "temp-nfcbpsk-s3-bucket-jar",
+					"S3Key": "lambda-nfcbp-management-v1.0.jar"
+				},
+				"Environment": {
+					"Variables": {
+						"DB_AWS_REGION": {
+							"Ref": "AWS::Region"
+						}
+					}
+				},
+				"Description": "",
+				"MemorySize": 512,
+				"Timeout": 15,
+				"Role": {
+					"Fn::GetAtt": [
+						"brandprotectupdateproductrole",
+						"Arn"
+					]
+				}
+
+			}
+		},
+		"brandprotectUserSignupAction": {
+			"Type": "AWS::Lambda::Function",
+			"Properties": {
+				"FunctionName": "brandprotect-user-signup-action",
+				"Handler": "com.infineon.brandprotect.dataset.CreateUserDataset::handleRequest",
+				"Runtime": "java11",
+				"Code": {
+					"S3Bucket": "temp-nfcbpsk-s3-bucket-jar",
+					"S3Key": "lambda-create-user-dataset-v1.0.jar"
+				},
+				"Description": "",
+				"MemorySize": 512,
+				"Timeout": 15,
+				"Environment": {
+					"Variables": {
+						"DB_AWS_REGION": {
+							"Ref": "AWS::Region"
+						},
+						"NUM_DEFAULT_USER_KEYS": "2",
+						"NUM_DEFAULT_USER_PRODUCTS": "2"
+					}
+				},
+				"Role": {
+					"Fn::GetAtt": [
+						"brandprotectUserSignupActionRole",
+						"Arn"
+					]
+				}
+			}
+
+
+		},
+		"brandprotectUserSignupActionRole": {
+			"Type": "AWS::IAM::Role",
+			"Properties": {
+				"RoleName": "brandprotect-user-signup-action-role",
+				"AssumeRolePolicyDocument": {
+					"Version": "2012-10-17",
+					"Statement": [
+						{
+							"Effect": "Allow",
+							"Principal": {
+								"Service": [
+									"lambda.amazonaws.com"
+								]
+							},
+							"Action": [
+								"sts:AssumeRole"
+							]
+						}
+					]
+				},
+
+				"Path": "/",
+				"Policies": [
+					{
+						"PolicyName": "brandprotect-user-signup-action-db-access",
+						"PolicyDocument": {
+							"Version": "2012-10-17",
+							"Statement": [
+								{
+									"Sid": "VisualEditor0",
+									"Effect": "Allow",
+									"Action": "dynamodb:*",
+									"Resource": "*"
+								}
+							]
+						}
+					},
+					{
+						"PolicyName": "AWSLambdaBasicExecutionRole",
+						"PolicyDocument": {
+							"Version": "2012-10-17",
+							"Statement": [
+								{
+									"Effect": "Allow",
+									"Action": "logs:CreateLogGroup",
+									"Resource": {
+										"Fn::Join": [
+											"",
+											[
+												"arn:aws:logs:",
+												{
+													"Ref": "AWS::Region"
+												},
+												":",
+												{
+													"Ref": "AWS::AccountId"
+												},
+												":",
+
+												"*"
+											]
+										]
+									}
+
+
+								},
+								{
+									"Effect": "Allow",
+									"Action": [
+										"logs:CreateLogStream",
+										"logs:PutLogEvents"
+									],
+									"Resource": {
+										"Fn::Join": [
+											"",
+											[
+												"arn:aws:logs:",
+												{
+													"Ref": "AWS::Region"
+												},
+												":",
+												{
+													"Ref": "AWS::AccountId"
+												},
+												":",
+
+												"log-group:/aws/lambda/brandprotect-user-signup-action:*"
+											]
+										]
+
+									}
+								}
+							]
+						}
+					}
+				]
+			}
+		},
+		"brandprotectupdateproductrole": {
+			"Type": "AWS::IAM::Role",
+			"Properties": {
+				"RoleName": "brandprotectupdateproductrole",
+				"AssumeRolePolicyDocument": {
+					"Version": "2012-10-17",
+					"Statement": [
+						{
+							"Effect": "Allow",
+							"Principal": {
+								"Service": [
+									"lambda.amazonaws.com"
+								]
+							},
+							"Action": [
+								"sts:AssumeRole"
+							]
+						}
+					]
+				},
+				"Path": "/",
+				"Policies": [
+					{
+						"PolicyName": "AWSLambdaBasicExecutionRole",
+						"PolicyDocument": {
+							"Version": "2012-10-17",
+							"Statement": [
+								{
+									"Effect": "Allow",
+									"Action": "logs:CreateLogGroup",
+									"Resource": {
+										"Fn::Join": [
+											"",
+											[
+												"arn:aws:logs:",
+												{
+													"Ref": "AWS::Region"
+												},
+												":",
+												{
+													"Ref": "AWS::AccountId"
+												},
+												":",
+
+												"*"
+											]
+										]
+									}
+								},
+								{
+									"Effect": "Allow",
+									"Action": [
+										"logs:CreateLogStream",
+										"logs:PutLogEvents"
+									],
+									"Resource": "*"
+								}
+							]
+						}
+					},
+					{
+						"PolicyName": "DynamoDB-Update-Product-Permission",
+						"PolicyDocument": {
+							"Version": "2012-10-17",
+							"Statement": [
+								{
+									"Sid": "VisualEditor0",
+									"Effect": "Allow",
+									"Action": "dynamodb:UpdateItem",
+									"Resource": {
+										"Fn::Join": [
+											"",
+											[
+												"arn:aws:dynamodb:",
+												{
+													"Ref": "AWS::Region"
+												},
+												":",
+												{
+													"Ref": "AWS::AccountId"
+												},
+												":table/Product"
+											]
+										]
+									}
+								}
+							]
+						}
+
+					}
+				]
+			}
+		},
+		"brandprotectlistproductinforole": {
+			"Type": "AWS::IAM::Role",
+			"Properties": {
+				"RoleName": "brandprotectlistproductinforole",
+				"AssumeRolePolicyDocument": {
+					"Version": "2012-10-17",
+					"Statement": [
+						{
+							"Effect": "Allow",
+							"Principal": {
+								"Service": [
+									"lambda.amazonaws.com"
+								]
+							},
+							"Action": [
+								"sts:AssumeRole"
+							]
+						}
+					]
+				},
+				"Path": "/",
+				"Policies": [
+					{
+						"PolicyName": "AWSLambdaBasicExecutionRole",
+						"PolicyDocument": {
+							"Version": "2012-10-17",
+							"Statement": [
+								{
+									"Effect": "Allow",
+									"Action": "logs:CreateLogGroup",
+									"Resource": {
+										"Fn::Join": [
+											"",
+											[
+												"arn:aws:logs:",
+												{
+													"Ref": "AWS::Region"
+												},
+												":",
+												{
+													"Ref": "AWS::AccountId"
+												},
+												":",
+
+												"*"
+											]
+										]
+									}
+								},
+								{
+									"Effect": "Allow",
+									"Action": [
+										"logs:CreateLogStream",
+										"logs:PutLogEvents"
+									],
+									"Resource": "*"
+								}
+							]
+						}
+					},
+					{
+						"PolicyName": "AmazonDynamoDBReadOnlyAccess",
+						"PolicyDocument": {
+							"Version": "2012-10-17",
+							"Statement": [
+								{
+									"Action": [
+										"dynamodb:*",
+										"dax:*",
+										"application-autoscaling:DeleteScalingPolicy",
+										"application-autoscaling:DeregisterScalableTarget",
+										"application-autoscaling:DescribeScalableTargets",
+										"application-autoscaling:DescribeScalingActivities",
+										"application-autoscaling:DescribeScalingPolicies",
+										"application-autoscaling:PutScalingPolicy",
+										"application-autoscaling:RegisterScalableTarget",
+										"cloudwatch:DeleteAlarms",
+										"cloudwatch:DescribeAlarmHistory",
+										"cloudwatch:DescribeAlarms",
+										"cloudwatch:DescribeAlarmsForMetric",
+										"cloudwatch:GetMetricStatistics",
+										"cloudwatch:ListMetrics",
+										"cloudwatch:PutMetricAlarm",
+										"cloudwatch:GetMetricData",
+										"datapipeline:ActivatePipeline",
+										"datapipeline:CreatePipeline",
+										"datapipeline:DeletePipeline",
+										"datapipeline:DescribeObjects",
+										"datapipeline:DescribePipelines",
+										"datapipeline:GetPipelineDefinition",
+										"datapipeline:ListPipelines",
+										"datapipeline:PutPipelineDefinition",
+										"datapipeline:QueryObjects",
+										"ec2:DescribeVpcs",
+										"ec2:DescribeSubnets",
+										"ec2:DescribeSecurityGroups",
+										"iam:GetRole",
+										"iam:ListRoles",
+										"kms:DescribeKey",
+										"kms:ListAliases",
+										"sns:CreateTopic",
+										"sns:DeleteTopic",
+										"sns:ListSubscriptions",
+										"sns:ListSubscriptionsByTopic",
+										"sns:ListTopics",
+										"sns:Subscribe",
+										"sns:Unsubscribe",
+										"sns:SetTopicAttributes",
+										"lambda:CreateFunction",
+										"lambda:ListFunctions",
+										"lambda:ListEventSourceMappings",
+										"lambda:CreateEventSourceMapping",
+										"lambda:DeleteEventSourceMapping",
+										"lambda:GetFunctionConfiguration",
+										"lambda:DeleteFunction",
+										"resource-groups:ListGroups",
+										"resource-groups:ListGroupResources",
+										"resource-groups:GetGroup",
+										"resource-groups:GetGroupQuery",
+										"resource-groups:DeleteGroup",
+										"resource-groups:CreateGroup",
+										"tag:GetResources",
+										"kinesis:ListStreams",
+										"kinesis:DescribeStream",
+										"kinesis:DescribeStreamSummary"
+									],
+									"Effect": "Allow",
+									"Resource": "*"
+								},
+								{
+									"Action": "cloudwatch:GetInsightRuleReport",
+									"Effect": "Allow",
+									"Resource": "arn:aws:cloudwatch:*:*:insight-rule/DynamoDBContributorInsights*"
+								},
+								{
+									"Action": [
+										"iam:PassRole"
+									],
+									"Effect": "Allow",
+									"Resource": "*",
+									"Condition": {
+										"StringLike": {
+											"iam:PassedToService": [
+												"application-autoscaling.amazonaws.com",
+												"application-autoscaling.amazonaws.com.cn",
+												"dax.amazonaws.com"
+											]
+										}
+									}
+								},
+								{
+									"Effect": "Allow",
+									"Action": [
+										"iam:CreateServiceLinkedRole"
+									],
+									"Resource": "*",
+									"Condition": {
+										"StringEquals": {
+											"iam:AWSServiceName": [
+												"replication.dynamodb.amazonaws.com",
+												"dax.amazonaws.com",
+												"dynamodb.application-autoscaling.amazonaws.com",
+												"contributorinsights.dynamodb.amazonaws.com",
+												"kinesisreplication.dynamodb.amazonaws.com"
+											]
+										}
+									}
+								}
+							]
+						}
+					}
+				]
+			}
+		},
+		"brandprotectlistkeysrole": {
+			"Type": "AWS::IAM::Role",
+			"Properties": {
+				"RoleName": "brandprotectlistkeysrole",
+				"AssumeRolePolicyDocument": {
+					"Version": "2012-10-17",
+					"Statement": [
+						{
+							"Effect": "Allow",
+							"Principal": {
+								"Service": [
+									"lambda.amazonaws.com"
+								]
+							},
+							"Action": [
+								"sts:AssumeRole"
+							]
+						}
+					]
+				},
+				"Path": "/",
+				"Policies": [
+					{
+						"PolicyName": "AWSLambdaBasicExecutionRole",
+						"PolicyDocument": {
+							"Version": "2012-10-17",
+							"Statement": [
+								{
+									"Effect": "Allow",
+									"Action": "logs:CreateLogGroup",
+									"Resource": {
+										"Fn::Join": [
+											"",
+											[
+												"arn:aws:logs:",
+												{
+													"Ref": "AWS::Region"
+												},
+												":",
+												{
+													"Ref": "AWS::AccountId"
+												},
+												":",
+
+												"*"
+											]
+										]
+									}
+								},
+								{
+									"Effect": "Allow",
+									"Action": [
+										"logs:CreateLogStream",
+										"logs:PutLogEvents"
+									],
+									"Resource": "*"
+								}
+							]
+						}
+					},
+					{
+						"PolicyName": "AWSLambdaTracerAccessExecutionRole",
+						"PolicyDocument": {
+							"Version": "2012-10-17",
+							"Statement": {
+								"Effect": "Allow",
+								"Action": [
+									"xray:PutTraceSegments",
+									"xray:PutTelemetryRecords"
+								],
+								"Resource": [
+									"*"
+								]
+							}
+						}
+					},
+					{
+						"PolicyName": "PolicyReadKeyStore",
+						"PolicyDocument": {
+							"Version": "2012-10-17",
+							"Statement": {
+								"Sid": "VisualEditor0",
+								"Effect": "Allow",
+								"Action": "dynamodb:*",
+								"Resource": "*"
+							}
+						}
+					}
+				]
+			}
+		},
+		"brandprotectupdatekeyrole": {
+			"Type": "AWS::IAM::Role",
+			"Properties": {
+				"RoleName": "brandprotectupdatekeyrole",
+				"AssumeRolePolicyDocument": {
+					"Version": "2012-10-17",
+					"Statement": [
+						{
+							"Effect": "Allow",
+							"Principal": {
+								"Service": [
+									"lambda.amazonaws.com"
+								]
+							},
+							"Action": [
+								"sts:AssumeRole"
+							]
+						}
+					]
+				},
+				"Path": "/",
+				"Policies": [
+					{
+						"PolicyName": "AWSLambdaBasicExecutionRole",
+						"PolicyDocument": {
+							"Version": "2012-10-17",
+							"Statement": [
+								{
+									"Effect": "Allow",
+									"Action": "logs:CreateLogGroup",
+									"Resource": {
+										"Fn::Join": [
+											"",
+											[
+												"arn:aws:logs:",
+												{
+													"Ref": "AWS::Region"
+												},
+												":",
+												{
+													"Ref": "AWS::AccountId"
+												},
+												":",
+
+												"*"
+											]
+										]
+
+									}
+								},
+								{
+									"Effect": "Allow",
+									"Action": [
+										"logs:CreateLogStream",
+										"logs:PutLogEvents"
+									],
+									"Resource": "*"
+								}
+							]
+						}
+					},
+					{
+						"PolicyName": "DynamoDB-UpdateItem-Permission",
+						"PolicyDocument": {
+							"Version": "2012-10-17",
+							"Statement": [
+								{
+									"Sid": "VisualEditor0",
+									"Effect": "Allow",
+									"Action": "dynamodb:UpdateItem",
+									"Resource": {
+										"Fn::Join": [
+											"",
+											[
+												"arn:aws:dynamodb:",
+												{
+													"Ref": "AWS::Region"
+												},
+												":",
+												{
+													"Ref": "AWS::AccountId"
+												},
+												":table/Keystore"
+											]
+										]
+
+									}
+								}
+							]
+						}
+					}
+				]
+			}
+		},
+		"brandprotectsmmarole": {
+			"Type": "AWS::IAM::Role",
+			"Properties": {
+				"RoleName": "brandprotectsmmarole",
+				"AssumeRolePolicyDocument": {
+					"Version": "2012-10-17",
+					"Statement": [
+						{
+							"Effect": "Allow",
+							"Principal": {
+								"Service": [
+									"lambda.amazonaws.com"
+								]
+							},
+							"Action": [
+								"sts:AssumeRole"
+							]
+						}
+					]
+				},
+				"Path": "/",
+				"Policies": [
+					{
+						"PolicyName": "AWSLambdaBasicExecutionRole1",
+						"PolicyDocument": {
+							"Version": "2012-10-17",
+							"Statement": [
+								{
+									"Effect": "Allow",
+									"Action": [
+										"logs:CreateLogGroup",
+										"logs:CreateLogStream",
+										"logs:PutLogEvents"
+									],
+									"Resource": "*"
+								}
+							]
+						}
+					},
+					{
+						"PolicyName": "PolicySessionReadWrite",
+						"PolicyDocument": {
+							"Version": "2012-10-17",
+							"Statement": {
+								"Sid": "VisualEditor0",
+								"Effect": "Allow",
+								"Action": "dynamodb:*",
+								"Resource": "*"
+							}
+						}
+					}
+				]
+			}
+		},
+		"APIGateWayProductReadRole": {
+			"Type": "AWS::IAM::Role",
+			"Properties": {
+				"RoleName": "APIGateWayProductReadRole",
+				"AssumeRolePolicyDocument": {
+					"Version": "2012-10-17",
+					"Statement": [
+						{
+							"Sid": "",
+							"Effect": "Allow",
+							"Principal": {
+								"Service": "apigateway.amazonaws.com"
+							},
+							"Action": "sts:AssumeRole"
+						}
+					]
+				},
+				"ManagedPolicyArns": [
+					"arn:aws:iam::aws:policy/service-role/AmazonAPIGatewayPushToCloudWatchLogs"
+				],
+				"Policies": [
+					{
+						"PolicyName": "API_Service_Role_Policy",
+						"PolicyDocument": {
+							"Version": "2012-10-17",
+							"Statement": [
+								{
+									"Sid": "VisualEditor0",
+									"Effect": "Allow",
+									"Action": "dynamodb:GetItem",
+									"Resource": {
+										"Fn::Join": [
+											"",
+											[
+												"arn:aws:dynamodb:",
+												{
+													"Ref": "AWS::Region"
+												},
+												":",
+												{
+													"Ref": "AWS::AccountId"
+												},
+												":table/Product"
+											]
+										]
+									}
+								}
+							]
+						}
+					}
+				]
+			}
+		},
+		"ApiGatewayCloudWatchLogsRole": {
+			"Type": "AWS::IAM::Role",
+			"Properties": {
+				"AssumeRolePolicyDocument": {
+					"Version": "2012-10-17",
+					"Statement": [
+						{
+							"Effect": "Allow",
+							"Principal": {
+								"Service": [
+									"apigateway.amazonaws.com"
+								]
+							},
+							"Action": [
+								"sts:AssumeRole"
+							]
+						}
+					]
+				},
+				"Policies": [
+					{
+						"PolicyName": "API_GW_Logs_Policy",
+						"PolicyDocument": {
+							"Version": "2012-10-17",
+							"Statement": [
+								{
+									"Effect": "Allow",
+									"Action": [
+										"logs:CreateLogGroup",
+										"logs:CreateLogStream",
+										"logs:DescribeLogGroups",
+										"logs:DescribeLogStreams",
+										"logs:PutLogEvents",
+										"logs:GetLogEvents",
+										"logs:FilterLogEvents"
+									],
+									"Resource": "*"
+								}
+							]
+						}
+					}
+				]
+			}
+		},
+		"BrandprotectManagemenApiGatewayCloudWatchLogsRole": {
+			"Type": "AWS::IAM::Role",
+			"Properties": {
+				"AssumeRolePolicyDocument": {
+					"Version": "2012-10-17",
+					"Statement": [
+						{
+							"Effect": "Allow",
+							"Principal": {
+								"Service": [
+									"apigateway.amazonaws.com"
+								]
+							},
+							"Action": [
+								"sts:AssumeRole"
+							]
+						}
+					]
+				},
+				"Policies": [
+					{
+						"PolicyName": "API_GW_Logs_Policy",
+						"PolicyDocument": {
+							"Version": "2012-10-17",
+							"Statement": [
+								{
+									"Effect": "Allow",
+									"Action": [
+										"logs:CreateLogGroup",
+										"logs:CreateLogStream",
+										"logs:DescribeLogGroups",
+										"logs:DescribeLogStreams",
+										"logs:PutLogEvents",
+										"logs:GetLogEvents",
+										"logs:FilterLogEvents"
+									],
+									"Resource": "*"
+								}
+							]
+						}
+					}
+				]
+			}
+		},
+		"UserPoolClient": {
+			"Type": "AWS::Cognito::UserPoolClient",
+			"Properties": {
+				"ClientName": "devnfcbpskclientapp",
+				"AccessTokenValidity": 8,
+				"PreventUserExistenceErrors": "ENABLED",
+				"IdTokenValidity": 8,
+				"UserPoolId": {
+					"Ref": "IdentityPool"
+				},
+				"AllowedOAuthFlowsUserPoolClient": true,
+				"CallbackURLs": [
+					"http://localhost:8081/index.html"
+				],
+				"LogoutURLs": [
+					"https://google.com"
+				],
+				"AllowedOAuthFlows": [
+					"code",
+					"implicit"
+				],
+				"AllowedOAuthScopes": [
+					"email",
+					"openid",
+					"profile"
+				],
+				"SupportedIdentityProviders": [
+					"COGNITO"
+				]
+			}
+		},
+		"UserPoolDomain": {
+			"Type": "AWS::Cognito::UserPoolDomain",
+			"Properties": {
+				"Domain": "domain-name",
+				"UserPoolId": {
+					"Ref": "IdentityPool"
+				}
+			}
+		},
+		"IdentityPool": {
+			"Type": "AWS::Cognito::UserPool",
+			"Properties": {
+				"UserPoolName": "IdentityPool",
+				"LambdaConfig": {
+					"PreSignUp": {
+
+						"Fn::GetAtt": [
+							"brandprotectUserSignupAction",
+							"Arn"
+						]
+					}
+				}
+			}
+
+		}
+	}
+}
+
+
+

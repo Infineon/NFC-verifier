@@ -1,0 +1,189 @@
+{
+	"AWSTemplateFormatVersion": "2010-09-09",
+	"Transform": "AWS::Serverless-2016-10-31",
+	"Description": "AWS CloudFormation template to create the DynamoDB tables",
+	"Resources": {
+		"Counter": {
+			"Type": "AWS::DynamoDB::Table",
+			"Properties": {
+				"TableName": "Counter",
+				"AttributeDefinitions": [
+					{
+						"AttributeName": "CounterId",
+						"AttributeType": "S"
+					}
+				],
+				"KeySchema": [
+					{
+						"AttributeName": "CounterId",
+						"KeyType": "HASH"
+					}
+				],
+				"ProvisionedThroughput": {
+					"ReadCapacityUnits": 1,
+					"WriteCapacityUnits": 1
+				}
+			}
+		},
+		"Keystore": {
+			"Type": "AWS::DynamoDB::Table",
+			"Properties": {
+				"TableName": "Keystore",
+				"AttributeDefinitions": [
+					{
+						"AttributeName": "KeyLabel",
+						"AttributeType": "S"
+					},
+					{
+						"AttributeName": "UserID",
+						"AttributeType": "S"
+					}
+				],
+				"KeySchema": [
+					{
+						"AttributeName": "KeyLabel",
+						"KeyType": "HASH"
+					}
+				],
+				"ProvisionedThroughput": {
+					"ReadCapacityUnits": 6,
+					"WriteCapacityUnits": 8
+				},
+
+				"GlobalSecondaryIndexes": [
+					{
+						"IndexName": "UserID-index",
+						"KeySchema": [
+							{
+								"AttributeName": "UserID",
+								"KeyType": "HASH"
+							}
+						],
+						"Projection": {
+
+							"ProjectionType": "ALL"
+						},
+						"ProvisionedThroughput": {
+							"ReadCapacityUnits": "5",
+							"WriteCapacityUnits": "5"
+						}
+					}
+				]
+			}
+		},
+		"Product": {
+			"Type": "AWS::DynamoDB::Table",
+			"Properties": {
+				"TableName": "Product",
+				"AttributeDefinitions": [
+					{
+						"AttributeName": "ProductCode",
+						"AttributeType": "S"
+					},
+					{
+						"AttributeName": "UserID",
+						"AttributeType": "S"
+					}
+				],
+				"KeySchema": [
+					{
+						"AttributeName": "ProductCode",
+						"KeyType": "HASH"
+					}
+				],
+				"ProvisionedThroughput": {
+					"ReadCapacityUnits": 6,
+					"WriteCapacityUnits": 8
+				},
+
+				"GlobalSecondaryIndexes": [
+					{
+						"IndexName": "UserID-index",
+						"KeySchema": [
+							{
+								"AttributeName": "UserID",
+								"KeyType": "HASH"
+							}
+						],
+						"Projection": {
+
+							"ProjectionType": "ALL"
+						},
+						"ProvisionedThroughput": {
+							"ReadCapacityUnits": "5",
+							"WriteCapacityUnits": "5"
+						}
+					}
+				]
+			}
+		},
+		"Sessions": {
+			"Type": "AWS::DynamoDB::Table",
+			"Properties": {
+				"TableName": "Sessions",
+				"AttributeDefinitions": [
+					{
+						"AttributeName": "SessionID",
+						"AttributeType": "S"
+					}
+				],
+				"KeySchema": [
+					{
+						"AttributeName": "SessionID",
+						"KeyType": "HASH"
+					}
+				],
+				"ProvisionedThroughput": {
+					"ReadCapacityUnits": 6,
+					"WriteCapacityUnits": 8
+				},
+				"TimeToLiveSpecification": {
+					"AttributeName": "SessionValidity",
+					"Enabled": true
+				}
+			}
+		},
+		"Verifications": {
+			"Type": "AWS::DynamoDB::Table",
+			"Properties": {
+				"TableName": "Verifications",
+				"AttributeDefinitions": [
+					{
+						"AttributeName": "KeyLabel",
+						"AttributeType": "S"
+					},
+					{
+						"AttributeName": "VerificationDate",
+						"AttributeType": "S"
+					}
+				],
+				"KeySchema": [
+					{
+						"AttributeName": "KeyLabel",
+						"KeyType": "HASH"
+					},
+					{
+						"AttributeName": "VerificationDate",
+						"KeyType": "RANGE"
+					}
+				],
+				"ProvisionedThroughput": {
+					"ReadCapacityUnits": 6,
+					"WriteCapacityUnits": 8
+				},
+				"TimeToLiveSpecification": {
+					"AttributeName": "Expiry",
+					"Enabled": true
+				}
+			}
+		}
+		
+	}
+}
+
+
+
+
+
+
+	

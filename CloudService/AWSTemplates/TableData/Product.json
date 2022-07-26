@@ -1,0 +1,14 @@
+{
+    "ProductCode": {
+        "S": "FE01"
+    },
+    "UserID": {
+        "S": "IFX"
+    },
+    "ProductType": {
+        "S": "0"
+    },
+    "ProductWebpage": {
+        "S": "https://www.infineon.com/cms/en/discoveries/near-field-communication/"
+    }
+}

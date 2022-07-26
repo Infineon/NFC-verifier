@@ -1,0 +1,29 @@
+{
+    "AWSTemplateFormatVersion": "2010-09-09",
+    "Description": "AWS CloudFormation template creates an S3 bucket, which will be used temporarily for uploading libraries",
+    "Resources": {
+        "S3Bucket": {
+            "DeletionPolicy": "Retain",
+            "Type": "AWS::S3::Bucket",
+            "Description": "S3 bucket creation",
+            "Properties": {
+                "BucketName": "temp-nfcbpsk-s3-bucket-jar",
+                "AccessControl": "Private",
+                "PublicAccessBlockConfiguration": {
+                    "BlockPublicAcls": true,
+                    "BlockPublicPolicy": true,
+                    "IgnorePublicAcls": true,
+                    "RestrictPublicBuckets": true
+                }
+            }
+        }
+    },
+    "Outputs": {
+        "S3Bucket": {
+            "Description": "S3 bucket for uploading libraries is created",
+            "Value": {
+                "Ref": "S3Bucket"
+            }
+        }
+    }
+}
