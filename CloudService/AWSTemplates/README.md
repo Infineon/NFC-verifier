@@ -31,7 +31,7 @@ This document of AWS cloud templates will assist you in quickly getting started 
 3. Ensure that Windows PowerShell 5.1 or above is installed. (Type `$PSVersionTable` in the PowerShell terminal to get the version information)
 
 ## Steps to deploy AWS CloudFormation Template:
-**Warning**: Before performing these steps, the AWS account and AWS region in which the template should be executed, must be configured using the ['aws configure'](../AWSTemplates/StepsToConfigureAWSCLI.md) command. The resources in this template are created using the configured AWS account and AWS region.
+:warning: **Warning**: Before performing these steps, the AWS account and AWS region in which the template should be executed, must be configured using the ['aws configure'](../AWSTemplates/StepsToConfigureAWSCLI.md) command. The resources in this template are created using the configured AWS account and AWS region.<br>
 
 1. Download and extract the CloudFormation Templates from the repository. 
 
