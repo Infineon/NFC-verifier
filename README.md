@@ -16,6 +16,10 @@ This starter kit comes with the following software components:
 
 * ### NFC verifier - Demo mobile application source code and AWS CloudFormation template (For custom development)
 The folder contains project source codes and libraries of the NFC verifier app for Android and iOS. Functionally, these projects correlate with the Infineon NFC verifier apps available in Play Store and App Store respectively, but with a simplified UI. This source code and libraries can be used to implement a customized brand protection solution to meet the usecase needs. Also, the provided AWS CloudFormation template can used to create the brand protection cloud infrastructure in any AWS account. 
+
+**Warning: For demonstration and evaluation purposes only**
+These templates are only example implementations to enable easy setup of AWS cloud infrastructure for demonstrations.
+For production purposes, the implementation shall have adequate security measures to take care of security critical assets such as keys and tokens. Please refer to security risks and guidance on [OWASP](https://owasp.org/) for additional information.
 <br>
 <br>
 
