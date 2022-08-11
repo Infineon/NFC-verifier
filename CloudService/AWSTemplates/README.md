@@ -1,7 +1,7 @@
 # NFC verifier - Cloud service (AWS CloudFormation Template)
 This document of AWS cloud templates will assist you in quickly getting started with Infineon NFC verifier cloud setup and create your own cloud server.
 
-**Warning: For demonstration and evaluation purposes only**
+#Warning: For demonstration and evaluation purposes only
 These templates are only example implementations to enable easy setup of AWS cloud infrastructure for demonstrations.
 For production purposes, the implementation shall have adequate security measures to take care of security critical assets such as keys and tokens. Please refer to security risks and guidance on [OWASP](https://owasp.org/) for additional information.
 
